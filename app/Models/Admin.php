@@ -10,8 +10,8 @@ class Admin extends Model
     use HasFactory;
 
 
-    protected $table = 'employees';
-    protected $primaryKey = 'pkFoodId';
+    protected $table = 'admin';
+    protected $primaryKey = 'id';
 
 
 
