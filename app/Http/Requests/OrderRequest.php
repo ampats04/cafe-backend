@@ -23,7 +23,7 @@ class OrderRequest extends FormRequest
     {
         return [
 
-            'fkProductId' => 'required',
+            'fkProductId' => 'required|exists:products,pkProductId',
             'quantity' => 'required',
         ];
     }

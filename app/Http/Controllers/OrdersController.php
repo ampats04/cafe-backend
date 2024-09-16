@@ -45,15 +45,6 @@ class OrdersController extends Controller
             return response()->json(['success' => false, 'message' => 'Product not found'], 404);
         }
 
-        // Check for existing cart item for the current table and customer
-        // $cartItem = Orders::whereHas('table', function ($query) use ($table) {
-        //     $query->where('tableNumber', $table->tableNumber)
-        //         ->where('customerName', $table->customerName)
-        //         ->active();
-        // })->where('fkProductId', $productId)
-        //     ->active()
-        //     ->first();
-
         $cartItem = Orders::where('fkTableId', '=', $tableId)
             ->where('fkProductId', '=', $productId)
             ->whereHas('product', function ($query) {
