@@ -28,7 +28,6 @@ class AuthController extends Controller
             // Use the AuthService to attempt login
             $user = $this->authService->login($request);
 
-            // If login is successful (user is returned), respond with success
             if ($user) {
                 return response()->json([
                     'success' => true,
@@ -37,7 +36,6 @@ class AuthController extends Controller
                 ], 200);
             }
 
-            // If login fails, respond with error message
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid email or password.'
