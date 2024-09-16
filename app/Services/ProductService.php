@@ -35,4 +35,28 @@ class ProductService
         return Product::all();
     }
 
+    public function getShakes()
+    {
+
+
+        return Product::shake()
+            ->get();
+    }
+
+    public function getFood()
+    {
+
+
+        return Product::food()
+            ->get();
+    }
+
+    public function getBeverage()
+    {
+
+
+        return Product::beverage()
+            ->get();
+    }
+
 }
