@@ -71,4 +71,97 @@ class ProductController extends Controller
 
         }
     }
+
+    public function getFoods()
+    {
+
+        try {
+
+            $food = $this->productService->getFood();
+
+            if ($food->isEmpty()) {
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No products found.',
+                    'data' => $food
+                ], 200);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Products fetched successfully!',
+                'data' => $food
+            ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while fetching products.',
+                'error' => $e->getMessage()
+            ], 500);
+
+        }
+    }
+
+    public function getShakes()
+    {
+
+        try {
+
+            $food = $this->productService->getShakes();
+
+            if ($food->isEmpty()) {
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No products found.',
+                    'data' => $food
+                ], 200);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Products fetched successfully!',
+                'data' => $food
+            ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while fetching products.',
+                'error' => $e->getMessage()
+            ], 500);
+
+        }
+    }
+
+    public function getBeverages()
+    {
+
+        try {
+
+            $food = $this->productService->getBeverage();
+
+            if ($food->isEmpty()) {
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'No products found.',
+                    'data' => $food
+                ], 200);
+            }
+            return response()->json([
+                'success' => true,
+                'message' => 'Products fetched successfully!',
+                'data' => $food
+            ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Server error while fetching products.',
+                'error' => $e->getMessage()
+            ], 500);
+
+        }
+    }
 }

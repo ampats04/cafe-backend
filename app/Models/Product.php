@@ -31,4 +31,19 @@ class Product extends Model
 
         return $query->where('availability', '=', 'Available');
     }
+
+    public function scopeFood($query)
+    {
+        return $query->where('type', '=', 'Food');
+    }
+
+    public function scopeShake($query)
+    {
+        return $query->where('type', '=', 'Shake');
+    }
+
+    public function scopeBeverage($query)
+    {
+        return $query->where('type', '=', 'Beverage');
+    }
 }
