@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id('pkProductId');
             $table->string('name');
             $table->double('price');
+            $table->string('productImage')->nullable();
             $table->enum('type', ['Food', 'Beverage', 'Shake']);
             $table->enum('size', ['Small', 'Medium', 'Large', 'No Size'])->default('No Size');
             $table->enum('availability', ['Available', 'Not Available'])->default('Not Available');
