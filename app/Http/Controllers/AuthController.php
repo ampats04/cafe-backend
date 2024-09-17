@@ -45,7 +45,7 @@ class AuthController extends Controller
             // Handle any exceptions that occur in the service
             return response()->json([
                 'success' => false,
-                'message' => 'Login failed.'
+                'message' => 'Login failed'
             ], 500);
         }
     }
@@ -115,11 +115,11 @@ class AuthController extends Controller
 
 
         $table_id = $request->fkTableId;
-        $table = Table::where('pkTableId', '=', $table_id)
+        $table = Table::where('pkTableId', '=', $tableId)
             ->where('status', 'Active')
             ->first();
 
-        $cartItems = Orders::where('fkTableId', $table_id)
+        $cartItems = Orders::where('fkTableId', $tableId)
             ->pending()
             ->get();
 
