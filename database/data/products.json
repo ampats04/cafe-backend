@@ -1,7 +1,282 @@
-[{
-    "name": "Test Product",
-    "price": 10,
-    "type": "Food",
-    "size": "No Size",
-    "availability": "Available"
-}]
+[
+    {
+        "name": "Strawberry Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Strawberry Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Strawberry Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Hokkaido Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Hokkaido Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Hokkaido Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Matcha Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Matcha Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Matcha Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Okinawa Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Okinawa Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Okinawa Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Oreo Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Oreo Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Oreo Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Taro Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Taro Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Taro Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Wintermelon Milktea",
+        "price": "75",
+        "type": "Milktea",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Wintermelon Milktea",
+        "price": "100",
+        "type": "Milktea",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Wintermelon Milktea",
+        "price": "125",
+        "type": "Milktea",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Chocolate Shake",
+        "price": "75",
+        "type": "Shake",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Chocolate Shake",
+        "price": "100",
+        "type": "Shake",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Chocolate Shake",
+        "price": "125",
+        "type": "Shake",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Mango Graham Shake",
+        "price": "75",
+        "type": "Shake",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Mango Graham Shake",
+        "price": "100",
+        "type": "Shake",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Mango Graham Shake",
+        "price": "125",
+        "type": "Shake",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Banana Shake",
+        "price": "75",
+        "type": "Shake",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Banana Shake",
+        "price": "100",
+        "type": "Shake",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Banana Shake",
+        "price": "125",
+        "type": "Shake",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Cookies and Cream Shake",
+        "price": "75",
+        "type": "Shake",
+        "size": "Small",
+        "availability": "available"
+    },
+    {
+        "name": "Cookies and Cream Shake",
+        "price": "100",
+        "type": "Shake",
+        "size": "Medium",
+        "availability": "available"
+    },
+    {
+        "name": "Cookies and Cream Shake",
+        "price": "125",
+        "type": "Shake",
+        "size": "Large",
+        "availability": "available"
+    },
+    {
+        "name": "Brownies",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Carrot Cake",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Choco Roll",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Fries",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Hashbrowns",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Nachos",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    },
+    {
+        "name": "Torta",
+        "price": "100",
+        "type": "Food",
+        "size": "No Size",
+        "availability": "available"
+    }
+]
