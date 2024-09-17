@@ -133,6 +133,27 @@ class OrdersController extends Controller
     }
 
 
+    public function adminViewOrderHistory()
+    {
+
+        $orders = Orders::completed()
+            ->with(['product', 'table'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($orders->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Retrieved Order History',
+                'data' => $orders,
+            ], 200);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'No orders found',
+        ], 200);
+    }
+
     public function checkout(Request $request)
     {
         if (!session()->has('tableid')) {
@@ -163,7 +184,7 @@ class OrdersController extends Controller
 
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->pending()
-            ->with('product')
+            ->with('product', 'table')
             ->get();
 
         if ($cartItems->isEmpty()) {

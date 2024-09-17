@@ -55,7 +55,7 @@ Route::post('admin/login', [AuthController::class, 'login']);
 Route::get('admin/logout', [AuthController::class, 'logout']);
 
 Route::get('admin/ordered', [OrdersController::class, 'adminViewOrdered']);
-Route::get('admin/orders-history');
+Route::get('admin/orders-history', [OrdersController::class, 'adminViewOrderHistory']);
 
 Route::post('admin/add-product', [ProductController::class, 'addProduct']);
 Route::get('admin/products', [ProductController::class, 'getProducts']);
