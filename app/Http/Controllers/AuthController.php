@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
 use App\Http\Requests\TableRequest;
+use App\Models\Orders;
 use App\Models\Table;
 use App\Services\AuthService;
 use Exception;
@@ -106,17 +107,39 @@ class AuthController extends Controller
 
 
 
-    public function endSession()
+    public function endSession(TableRequest $request)
     {
         $tableId = session('tableId');
 
-        if (!session()->has('tableId')) {
 
-            return response()->json([
-                'success' => false,
-                'message' => 'No sesions found for ' . $tableId
-            ]);
+
+        $table_id = $request->fkTableId;
+        // if (!session()->has('tableId')) {
+
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'No sesions found for ' . $tableId
+        //     ]);
+        // }
+
+        $table = Table::where('pkTableId', '=', $table_id)
+            ->where('status', 'Active')
+            ->first();
+
+        $cartItems = Orders::where('fkTableId', $table_id)
+            ->pending()
+            ->get();
+
+        if ($cartItems->isEmpty()) {
+            return response()->json(['success' => true, 'message' => 'Cart is empty'], 400);
         }
+
+        foreach ($cartItems as $cartItem) {
+            $cartItem->update(['status' => 'Completed']);
+        }
+
+
+        $table->update(['status' => 'Inactive']);
         session()->flush();
 
         return response()->json([
