@@ -44,6 +44,6 @@ class Product extends Model
 
     public function scopeBeverage($query)
     {
-        return $query->where('type', '=', 'Beverage');
+        return $query->where('type', '=', 'Milktea');
     }
 }
