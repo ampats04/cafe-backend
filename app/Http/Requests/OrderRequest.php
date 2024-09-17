@@ -22,7 +22,7 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'fkTableId' => 'sometimes|exists:tables,pkTableId',
             'fkProductId' => 'required|exists:products,pkProductId',
             'quantity' => 'required',
         ];
