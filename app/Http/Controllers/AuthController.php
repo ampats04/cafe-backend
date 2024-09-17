@@ -44,7 +44,8 @@ class AuthController extends Controller
         } catch (Exception $e) {
             // Handle any exceptions that occur in the service
             return response()->json([
-                'message' => 'Login failed. ' . $e->getMessage()
+                'success' => false,
+                'message' => 'Login failed.'
             ], 500);
         }
     }
@@ -95,12 +96,12 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'tableId' => session('tableId'),
-                'message' => 'Session started',
+                'message' => 'Welcome to Tea Crate Cafe!',
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to start session',
+                'message' => 'Something went wrong',
             ], 500);
         }
     }
@@ -114,14 +115,6 @@ class AuthController extends Controller
 
 
         $table_id = $request->fkTableId;
-        // if (!session()->has('tableId')) {
-
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'No sesions found for ' . $tableId
-        //     ]);
-        // }
-
         $table = Table::where('pkTableId', '=', $table_id)
             ->where('status', 'Active')
             ->first();
@@ -144,7 +137,7 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Session ended successfully',
+            'message' => 'Thank you for dining in!',
         ], 200);
     }
 
