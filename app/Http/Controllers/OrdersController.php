@@ -80,7 +80,7 @@ class OrdersController extends Controller
 
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['message' => 'Cart is empty'], 200);
+            return response()->json(['success' => true, 'message' => 'Cart is empty'], 200);
         }
 
         $total = $cartItems->sum(function ($item) {
