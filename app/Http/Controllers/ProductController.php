@@ -163,4 +163,63 @@ class ProductController extends Controller
 
         }
     }
+
+    public function deleteProduct($productId)
+    {
+
+        try {
+
+            $product = $this->productService->deleteProduct($productId);
+            if ($product) {
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Product deleted successfully!',
+                    'data' => $product
+                ], 200);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found',
+            ], 404);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ], 500);
+        }
+    }
+
+    public function updateProduct($productId, ProductRequest $request)
+    {
+        try {
+
+            $product = $this->productService->updateProduct($productId, $request);
+
+
+            if ($product) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Product updated successfully!',
+                    'data' => $product
+                ], 200);
+            }
+
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found',
+            ], 404);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'something went wrong',
+            ], 500);
+        }
+    }
+
 }

@@ -49,8 +49,10 @@ Route::get('admin/orders-history', [OrdersController::class, 'adminViewCompleted
 
 Route::post('admin/serve-order', [OrdersController::class, 'served']);
 
-Route::post('admin/add-product', [ProductController::class, 'addProduct']);
 Route::get('admin/products', [ProductController::class, 'getProducts']);
+Route::post('admin/add-product', [ProductController::class, 'addProduct']);
+Route::post('admin/update-product', [ProductController::class, 'updateProduct']);
+Route::delete('admin/{productId}/delete-product', [ProductController::class, 'deleteProduct']);
 
 
 

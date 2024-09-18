@@ -22,12 +22,12 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
-            'size' => 'required|in:Small,Medium,Large,No Size',
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric|min:0',
+            'size' => 'sometimes|in:Small,Medium,Large,No Size',
             'productImage' => 'sometimes|file|mimes:jpeg,jpg,png|max:2048',
-            'type' => 'required|in:Food,Beverage,Shake',
-            'availability' => 'required|in:Available,Not Available',
+            'type' => 'sometimes|in:Food,Beverage,Shake',
+            'availability' => 'sometimes|in:Available,Not Available',
         ];
     }
 
