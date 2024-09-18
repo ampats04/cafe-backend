@@ -13,15 +13,6 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
-    protected OrderService $orderService;
-
-
-    public function __construct(OrderService $orderService)
-    {
-
-        $this->orderService = $orderService;
-    }
-
 
     public function addToCart(OrderRequest $orderRequest, $tableId, $productId)
     {
