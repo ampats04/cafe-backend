@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('dine-in', [AuthController::class, 'startSession']);
 Route::post('dine-out', [AuthController::class, 'endSession']);
-Route::get('orders', [OrdersController::class, 'viewCart']);
-Route::get('ordered', [OrdersController::class, 'viewOrdered']);
+Route::get('{tableId}/orders', [OrdersController::class, 'viewCart']);
+Route::get('{tableId}/ordered', [OrdersController::class, 'viewOrdered']);
 
 Route::get('foods', [ProductController::class, 'getFoods']);
 Route::get('shakes', [ProductController::class, 'getShakes']);
@@ -29,10 +29,10 @@ Route::get('beverages', [ProductController::class, 'getBeverages']);
 Route::post('add-customer-name', [CustomerController::class, 'addCustomerName']);
 
 //Orders
-Route::post('add-order', [OrdersController::class, 'addToCart']);
+Route::post('{tableId}/{productId}/add-order', [OrdersController::class, 'addToCart']);
 
-Route::delete('delete-order', [OrdersController::class, 'removeFromCart']);
-Route::post('checkout', [OrdersController::class, 'checkout']);
+Route::delete('{tableId}/{productId}/delete-order', [OrdersController::class, 'removeFromCart']);
+Route::post('{tableId}/checkout', [OrdersController::class, 'checkout']);
 
 //User Side
 

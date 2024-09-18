@@ -18,7 +18,6 @@ class ProductController extends Controller
     }
 
 
-
     public function addProduct(ProductRequest $request)
     {
         try {
@@ -30,7 +29,7 @@ class ProductController extends Controller
                 'success' => true,
                 'message' => 'Product added successfully!',
                 'data' => $product
-            ], 201); // 201 status code for created
+            ], 201);
 
         } catch (Exception $e) {
 
@@ -38,7 +37,7 @@ class ProductController extends Controller
                 'success' => false,
                 'message' => 'Failed to add product.',
                 'error' => "Something went wrong"
-            ], 500); // 500 status code for server error
+            ], 500);
         }
     }
 

@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function addCustomerName(TableRequest $request)
+    public function addCustomerName($tableId, TableRequest $request)
     {
 
         // $tableId = session('tableId');
-        $tableId = $request->tableNumber;
+        // $tableId = $request->tableNumber;
 
 
         // if (!session()->has('tableId')) {

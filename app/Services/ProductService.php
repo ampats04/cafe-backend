@@ -27,6 +27,12 @@ class ProductService
             throw $th;
         }
     }
+
+    public function removeImage($path)
+    {
+        $flag = Storage::disk('local')->delete(['public/' . $path]);
+        return $flag;
+    }
     public function addProduct($request)
     {
         try {
@@ -86,4 +92,8 @@ class ProductService
             ->get();
     }
 
+
+    public function deleteProduct(){
+        
+    }
 }

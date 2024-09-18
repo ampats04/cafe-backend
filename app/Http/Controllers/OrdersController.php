@@ -23,16 +23,9 @@ class OrdersController extends Controller
     }
 
 
-    public function addToCart(OrderRequest $orderRequest)
+    public function addToCart(OrderRequest $orderRequest, $tableId, $productId)
     {
 
-        // $tableId = session('tableId');
-        // if (!$tableId) {
-        //     return response()->json(['success' => false, 'message' => 'No table ID found in session'], 400);
-        // }
-
-        $tableId = $orderRequest->fkTableId;
-        $productId = $orderRequest->fkProductId;
         $quantity = $orderRequest->quantity;
 
 
@@ -70,10 +63,9 @@ class OrdersController extends Controller
         return response()->json(['success' => true, 'message' => 'Item added to cart']);
     }
 
-    public function viewCart(OrderRequest $request)
+    public function viewCart(OrderRequest $request, $tableId)
     {
-        // $tableId = session('tableId');
-        $tableId = $request->fkTableId;
+        // $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->active()
@@ -96,12 +88,12 @@ class OrdersController extends Controller
         ], 200);
     }
 
-    public function removeFromCart(OrderRequest $request)
+    public function removeFromCart(OrderRequest $request, $tableId, $productId)
     {
         // $tableId = session('tableId');
         $tableId = $request->fkTableId;
         $cartItem = Orders::where('fkTableId', '=', $tableId)
-            ->where('fkProductId', $request->fkProductId)
+            ->where('fkProductId', '=', $productId)
             ->active()
             ->first();
 
@@ -156,14 +148,14 @@ class OrdersController extends Controller
         ], 200);
     }
 
-    public function checkout(Request $request)
+    public function checkout($tableId)
     {
         // if (!session()->has('tableid')) {
         //     return response()->json(['success' => false, 'message' => 'Please sign in first'], 403);
         // }
 
         // $tableId = session('tableId');
-        $tableId = $request->fkTableId;
+        // $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', $tableId)
             ->active()
@@ -180,11 +172,10 @@ class OrdersController extends Controller
         return response()->json(['success' => true, 'message' => 'Order successful', 'data' => $cartItems], 200);
     }
 
-    public function viewOrdered(OrderRequest $request)
+    public function viewOrdered($tableId)
     {
 
         // $tableId = session('tableId');
-        $tableId = $request->fkTableId;
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->pending()
             ->with('product', 'table')
