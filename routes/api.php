@@ -26,7 +26,7 @@ Route::get('shakes', [ProductController::class, 'getShakes']);
 Route::get('beverages', [ProductController::class, 'getBeverages']);
 
 
-Route::post('add-customer-name', [CustomerController::class, 'addCustomerName']);
+Route::post('{tableId}/add-customer-name', [CustomerController::class, 'addCustomerName']);
 
 //Orders
 Route::post('{tableId}/{productId}/add-order', [OrdersController::class, 'addToCart']);
