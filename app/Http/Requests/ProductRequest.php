@@ -25,6 +25,7 @@ class ProductRequest extends FormRequest
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'size' => 'required|in:Small,Medium,Large,No Size',
+            'productImage' => 'sometimes|file|mimes:jpeg,jpg,png|max:2048',
             'type' => 'required|in:Food,Beverage,Shake',
             'availability' => 'required|in:Available,Not Available',
         ];
