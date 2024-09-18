@@ -28,7 +28,6 @@ class OrdersController extends Controller
 
         $quantity = $orderRequest->quantity;
 
-
         $table = Table::find($tableId);
         if (!$table) {
             return response()->json(['success' => false, 'message' => 'Table not found'], 404);
@@ -41,6 +40,7 @@ class OrdersController extends Controller
 
         $cartItem = Orders::where('fkTableId', '=', $tableId)
             ->where('fkProductId', '=', $productId)
+            ->active()
             ->whereHas('product', function ($query) {
                 $query->available();
             })
@@ -53,19 +53,18 @@ class OrdersController extends Controller
             return response()->json(['success' => true, 'message' => 'Quantity updated', 'data' => $cartItem]);
         }
 
-        Orders::create([
+        $orders = Orders::create([
             'fkTableId' => $tableId,
             'fkProductId' => $productId,
             'quantity' => $quantity,
             'status' => 'Active',
         ]);
 
-        return response()->json(['success' => true, 'message' => 'Item added to cart']);
+        return response()->json(['success' => true, 'message' => 'Item added to cart', 'data' => $orders]);
     }
 
-    public function viewCart(OrderRequest $request, $tableId)
+    public function viewCart($tableId)
     {
-        // $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->active()
@@ -88,10 +87,10 @@ class OrdersController extends Controller
         ], 200);
     }
 
-    public function removeFromCart(OrderRequest $request, $tableId, $productId)
+    public function removeFromCart($tableId, $productId)
     {
         // $tableId = session('tableId');
-        $tableId = $request->fkTableId;
+        // $tableId = $request->fkTableId;
         $cartItem = Orders::where('fkTableId', '=', $tableId)
             ->where('fkProductId', '=', $productId)
             ->active()
@@ -126,8 +125,27 @@ class OrdersController extends Controller
         ], 200);
     }
 
+    public function adminViewPendingOrders()
+    {
+        $orders = Orders::pending()
+            ->with(['product', 'table'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-    public function adminViewOrderHistory()
+        if ($orders->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Retrieved Pending orders',
+                'data' => $orders,
+            ], 200);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'No orders found',
+        ], 200);
+    }
+
+    public function adminViewCompletedOrders()
     {
 
         $orders = Orders::completed()
@@ -148,14 +166,44 @@ class OrdersController extends Controller
         ], 200);
     }
 
+    public function served($tableId)
+    {
+
+        $order = Orders::where('fkTableId', '=', $tableId)
+            ->pending()
+            ->first();
+
+        if ($order) {
+            $order->status = 'served';
+            $order->save();
+            return response()->json(['success' => true, 'message' => 'Order status updated to served', 'data' => $order], 200);
+        }
+
+        return response()->json(['message' => 'No pending order found'], 404);
+    }
+
+    public function adminViewServedOrders()
+    {
+
+        $orders = Orders::served()
+            ->with(['product', 'table'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($orders->isNotEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Retrieved Order History',
+                'data' => $orders,
+            ], 200);
+        }
+        return response()->json([
+            'success' => false,
+            'message' => 'No orders found',
+        ], 200);
+    }
     public function checkout($tableId)
     {
-        // if (!session()->has('tableid')) {
-        //     return response()->json(['success' => false, 'message' => 'Please sign in first'], 403);
-        // }
-
-        // $tableId = session('tableId');
-        // $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', $tableId)
             ->active()

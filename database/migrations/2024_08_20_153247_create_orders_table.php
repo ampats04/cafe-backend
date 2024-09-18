@@ -18,7 +18,7 @@ return new class extends Migration {
             //Active = Inside Cart
             //Pending = Checkout
             //Completed = Served
-            $table->enum('status', ['Active', 'Pending', 'Completed']);
+            $table->enum('status', ['Active', 'Pending', 'Served', 'Completed']);
             $table->foreign('fkTableId')->references('pkTableId')->on('tables')->onDelete('cascade');
             $table->foreign('fkProductId')->references('pkProductId')->on('products')->onDelete('cascade');
             $table->timestamps();

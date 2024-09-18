@@ -43,7 +43,11 @@ Route::post('admin/login', [AuthController::class, 'login']);
 Route::get('admin/logout', [AuthController::class, 'logout']);
 
 Route::get('admin/ordered', [OrdersController::class, 'adminViewOrdered']);
-Route::get('admin/orders-history', [OrdersController::class, 'adminViewOrderHistory']);
+Route::get('admin/pending-orders', [OrdersController::class, 'adminViewPendingOrders']);
+Route::get('admin/{tableId}/serve-order', [OrdersController::class, 'adminViewServedOrders']);
+Route::get('admin/orders-history', [OrdersController::class, 'adminViewCompletedOrders']);
+
+Route::post('admin/serve-order', [OrdersController::class, 'served']);
 
 Route::post('admin/add-product', [ProductController::class, 'addProduct']);
 Route::get('admin/products', [ProductController::class, 'getProducts']);
