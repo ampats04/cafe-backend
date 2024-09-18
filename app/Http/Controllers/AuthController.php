@@ -110,12 +110,12 @@ class AuthController extends Controller
 
     }
 
-    public function endSession(TableRequest $request)
+    public function endSession($tableId)
     {
         // $tableId = session('tableId');
         try {
 
-            $tableId = $request->tableNumber;
+            // $tableId = $request->tableNumber;
 
             $table = Table::where('pkTableId', '=', $tableId)
                 ->where('status', 'Active')

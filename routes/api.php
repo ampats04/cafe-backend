@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('dine-in', [AuthController::class, 'startSession']);
-Route::post('dine-out', [AuthController::class, 'endSession']);
+Route::post('{tableId}/dine-out', [AuthController::class, 'endSession']);
 Route::get('{tableId}/orders', [OrdersController::class, 'viewCart']);
 Route::get('{tableId}/ordered', [OrdersController::class, 'viewOrdered']);
 
