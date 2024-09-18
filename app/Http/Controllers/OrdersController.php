@@ -22,15 +22,16 @@ class OrdersController extends Controller
         $this->orderService = $orderService;
     }
 
+
     public function addToCart(OrderRequest $orderRequest)
     {
 
-        $tableId = session('tableId');
-        if (!$tableId) {
-            return response()->json(['success' => false, 'message' => 'No table ID found in session'], 400);
-        }
+        // $tableId = session('tableId');
+        // if (!$tableId) {
+        //     return response()->json(['success' => false, 'message' => 'No table ID found in session'], 400);
+        // }
 
-
+        $tableId = $orderRequest->fkTableId;
         $productId = $orderRequest->fkProductId;
         $quantity = $orderRequest->quantity;
 
@@ -56,7 +57,7 @@ class OrdersController extends Controller
         if ($cartItem) {
             $cartItem->quantity += $quantity;
             $cartItem->save();
-            return response()->json(['success' => true, 'message' => 'Quantity updated']);
+            return response()->json(['success' => true, 'message' => 'Quantity updated', 'data' => $cartItem]);
         }
 
         Orders::create([
@@ -69,9 +70,10 @@ class OrdersController extends Controller
         return response()->json(['success' => true, 'message' => 'Item added to cart']);
     }
 
-    public function viewCart()
+    public function viewCart(OrderRequest $request)
     {
-        $tableId = session('tableId');
+        // $tableId = session('tableId');
+        $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->active()
@@ -80,7 +82,7 @@ class OrdersController extends Controller
 
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['success' => true, 'message' => 'Cart is empty'], 200);
+            return response()->json(['success' => true, 'message' => 'Cart is empty', 'data' => []], 200);
         }
 
         $total = $cartItems->sum(function ($item) {
@@ -89,22 +91,22 @@ class OrdersController extends Controller
 
         return response()->json([
             'success' => true,
-            'cart_items' => $cartItems,
+            'data' => $cartItems,
             'total' => $total,
         ], 200);
     }
 
     public function removeFromCart(OrderRequest $request)
     {
-        $tableId = session('tableId');
-
-        $cartItem = Orders::where('fkProductId', '=', $tableId)
+        // $tableId = session('tableId');
+        $tableId = $request->fkTableId;
+        $cartItem = Orders::where('fkTableId', '=', $tableId)
             ->where('fkProductId', $request->fkProductId)
             ->active()
             ->first();
 
         if (!$cartItem) {
-            return response()->json(['success' => false, 'error' => 'Item not found in cart'], 404);
+            return response()->json(['success' => false, 'message' => 'Item not found in cart'], 404);
         }
 
         $cartItem->delete();
@@ -118,17 +120,17 @@ class OrdersController extends Controller
             ->with(['table', 'product'])
             ->get();
 
-        if ($cartItems->isNotEmpty()) {
+        if ($cartItems->isEmpty()) {
             return response()->json([
-                'success' => true,
-                'message' => 'Retrieved all Orders',
-                'data' => $cartItems,
+                'success' => false,
+                'message' => 'No orders found',
             ], 200);
         }
 
         return response()->json([
-            'success' => false,
-            'message' => 'No orders found',
+            'success' => true,
+            'message' => 'Retrieved all Orders',
+            'data' => $cartItems,
         ], 200);
     }
 
@@ -156,39 +158,40 @@ class OrdersController extends Controller
 
     public function checkout(Request $request)
     {
-        if (!session()->has('tableid')) {
-            return response()->json(['success' => false, 'message' => 'Please sign in first'], 403);
-        }
+        // if (!session()->has('tableid')) {
+        //     return response()->json(['success' => false, 'message' => 'Please sign in first'], 403);
+        // }
 
-        $tableId = session('tableId');
+        // $tableId = session('tableId');
+        $tableId = $request->fkTableId;
 
         $cartItems = Orders::where('fkTableId', $tableId)
             ->active()
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['success' => true, 'message' => 'Cart is empty'], 400);
+            return response()->json(['success' => true, 'message' => 'Cart is empty', 'data' => []], 400);
         }
 
         foreach ($cartItems as $cartItem) {
             $cartItem->update(['status' => 'Pending']);
         }
 
-        return response()->json(['success' => true, 'message' => 'Order successful', 'order' => $cartItems], 200);
+        return response()->json(['success' => true, 'message' => 'Order successful', 'data' => $cartItems], 200);
     }
 
-    public function viewOrdered()
+    public function viewOrdered(OrderRequest $request)
     {
 
-        $tableId = session('tableId');
-
+        // $tableId = session('tableId');
+        $tableId = $request->fkTableId;
         $cartItems = Orders::where('fkTableId', '=', $tableId)
             ->pending()
             ->with('product', 'table')
             ->get();
 
         if ($cartItems->isEmpty()) {
-            return response()->json(['message' => 'Cart is empty'], 200);
+            return response()->json(['success' => true, 'message' => 'Cart is empty', 'data' => []], 200);
         }
 
         $total = $cartItems->sum(function ($item) {
@@ -197,7 +200,8 @@ class OrdersController extends Controller
 
         return response()->json([
             'success' => true,
-            'ordered_items' => $cartItems,
+            'message' => 'Successfully retrieved orders',
+            'data' => $cartItems,
             'total' => $total,
         ], 200);
 
@@ -219,6 +223,7 @@ class OrdersController extends Controller
 
         return response()->json([
             'success' => false,
+            'data' => [],
             'message' => 'No pending orders found',
         ], 200);
     }

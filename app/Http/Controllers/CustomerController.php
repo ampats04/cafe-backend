@@ -11,32 +11,33 @@ class CustomerController extends Controller
     public function addCustomerName(TableRequest $request)
     {
 
-        $tableId = session('tableId');
+        // $tableId = session('tableId');
+        $tableId = $request->tableNumber;
 
 
-        if (!session()->has('tableId')) {
+        // if (!session()->has('tableId')) {
 
-            return response()->json([
-                'success' => false,
-                'message' => 'No sesions found for ' . $tableId
-            ]);
-        }
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'No sesions found for ' . $tableId
+        //     ]);
+        // }
 
         $table = Table::find($tableId);
         if (!$table) {
             return response()->json([
                 'success' => false,
                 'message' => 'Table not found. Please double-check your table number.'
-            ], 404); // Not found
+            ], 404);
         }
 
-        $table->customer_name = $request->customerName;
+        $table->customerName = $request->customerName;
         $table->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Customer name updated successfully.',
-            'table' => $table
+            'message' => 'Welcome ' . $table->customerName . '!',
+            'data' => $table
         ], 200); // Success
     }
 

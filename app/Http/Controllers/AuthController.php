@@ -33,7 +33,7 @@ class AuthController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Login successful!',
-                    'user' => $user
+                    'data' => $user
                 ], 200);
             }
 
@@ -65,80 +65,85 @@ class AuthController extends Controller
     public function startSession(TableRequest $request)
     {
 
-        $table_inactive = Table::where('tableNumber', $request->tableNumber)
-            ->where('status', 'Inactive')
-            ->first();
 
-        if (!$table_inactive) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Incorrect table number or table is taken',
-            ], 404);
-        }
+        try {
+            $table_inactive = Table::where('tableNumber', $request->tableNumber)
+                ->inactive()
+                ->first();
 
-        $table_active = Table::where('tableNumber', $request->tableNumber)
-            ->where('status', 'Active')
-            ->first();
+            if (!$table_inactive) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Incorrect table number. Please input correct table number',
+                ], 404);
+            }
 
-        if ($table_active) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Table is already taken'
-            ]);
-        }
+            $table_active = Table::where('tableNumber', $request->tableNumber)
+                ->active()
+                ->first();
 
-        $table_inactive->update(['status' => 'Active']);
-        $pkTableId = $table_inactive->pkTableId;
+            if ($table_active) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Table is already taken'
+                ]);
+            }
 
-        session()->put('tableId', $pkTableId);
+            $table_inactive->update(['status' => 'Active']);
+            // $pkTableId = $table_inactive->pkTableId;
 
-        if (session()->has('tableId')) {
+            // session()->put('tableId', $pkTableId);
+
             return response()->json([
                 'success' => true,
-                'tableId' => session('tableId'),
                 'message' => 'Welcome to Tea Crate Cafe!',
+
             ], 200);
-        } else {
+
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong',
+                'message' => 'Something went wrong'
             ], 500);
         }
+
+
     }
-
-
 
     public function endSession(TableRequest $request)
     {
-        $tableId = session('tableId');
+        // $tableId = session('tableId');
+        try {
 
+            $tableId = $request->tableNumber;
 
+            $table = Table::where('pkTableId', '=', $tableId)
+                ->where('status', 'Active')
+                ->first();
 
-        $table_id = $request->fkTableId;
-        $table = Table::where('pkTableId', '=', $tableId)
-            ->where('status', 'Active')
-            ->first();
+            $cartItems = Orders::where('fkTableId', $tableId)
+                ->pending()
+                ->get();
 
-        $cartItems = Orders::where('fkTableId', $tableId)
-            ->pending()
-            ->get();
+            if ($cartItems->isNotEmpty()) {
+                foreach ($cartItems as $cartItem) {
+                    $cartItem->update(['status' => 'Completed']);
+                }
+            }
 
-        if ($cartItems->isEmpty()) {
-            return response()->json(['success' => true, 'message' => 'Cart is empty'], 400);
+            $table->update(['status' => 'Inactive', 'customerName' => null]);
+            // session()->flush();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Thank you for dining in!',
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong'
+            ], 500);
         }
-
-        foreach ($cartItems as $cartItem) {
-            $cartItem->update(['status' => 'Completed']);
-        }
-
-
-        $table->update(['status' => 'Inactive']);
-        session()->flush();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Thank you for dining in!',
-        ], 200);
     }
 
 }

@@ -10,23 +10,11 @@ use App\Http\Controllers\ShakeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 
-
-
-// Route::post('add-table', [OrdersController::class, 'addTable']);
-
-
-
-
-
-
-// Route::middleware(['api'])->group(function () {
-
-//user
 
 Route::post('dine-in', [AuthController::class, 'startSession']);
 Route::post('dine-out', [AuthController::class, 'endSession']);
@@ -59,8 +47,6 @@ Route::get('admin/orders-history', [OrdersController::class, 'adminViewOrderHist
 
 Route::post('admin/add-product', [ProductController::class, 'addProduct']);
 Route::get('admin/products', [ProductController::class, 'getProducts']);
-
-//});
 
 
 
