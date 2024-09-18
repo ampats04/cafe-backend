@@ -18,6 +18,7 @@ class ProductController extends Controller
     }
 
 
+
     public function addProduct(ProductRequest $request)
     {
         try {
@@ -36,7 +37,7 @@ class ProductController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to add product.',
-                'error' => $e->getMessage()
+                'error' => "Something went wrong"
             ], 500); // 500 status code for server error
         }
     }
@@ -65,8 +66,7 @@ class ProductController extends Controller
             // Return server error response if something goes wrong
             return response()->json([
                 'success' => false,
-                'message' => 'Server error while fetching products.',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong',
             ], 500); // 500 
 
         }
@@ -96,8 +96,8 @@ class ProductController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Server error while fetching products.',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong',
+
             ], 500);
 
         }
@@ -127,8 +127,8 @@ class ProductController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Server error while fetching products.',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong',
+
             ], 500);
 
         }
@@ -158,8 +158,8 @@ class ProductController extends Controller
 
             return response()->json([
                 'success' => false,
-                'message' => 'Server error while fetching products.',
-                'error' => $e->getMessage()
+                'message' => 'Something went wrong',
+
             ], 500);
 
         }
