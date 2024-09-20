@@ -222,4 +222,23 @@ class ProductController extends Controller
         }
     }
 
+    public function getProductById($productId)
+    {
+        $product = $this->productService->getProductById($productId);
+
+        if ($product) {
+            return response()->json([
+                'success' => true,
+                'message' => 'successfully fetched product',
+                'data' => $product
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Product not found'
+            ], 404);
+        }
+    }
+
+
 }

@@ -24,6 +24,7 @@ Route::get('{tableId}/ordered', [OrdersController::class, 'viewOrdered']);
 Route::get('foods', [ProductController::class, 'getFoods']);
 Route::get('shakes', [ProductController::class, 'getShakes']);
 Route::get('beverages', [ProductController::class, 'getBeverages']);
+Route::get('product/{productId}', [ProductController::class, 'getProductById']);
 
 
 Route::post('{tableId}/add-customer-name', [CustomerController::class, 'addCustomerName']);

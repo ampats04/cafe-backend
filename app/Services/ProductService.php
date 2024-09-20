@@ -68,6 +68,11 @@ class ProductService
         return Product::all();
     }
 
+    public function getProductById($productId)
+    {
+        return Product::find($productId);
+    }
+
     public function getShakes()
     {
 
@@ -93,7 +98,40 @@ class ProductService
     }
 
 
-    public function deleteProduct(){
-        
+    public function deleteProduct($productId)
+    {
+        $product = Product::find($productId);
+
+        if ($product != null) {
+            if ($product->productImage != null) {
+
+                $this->removeImage($product->productImage);
+            }
+            return $product->delete();
+        }
+
+        throw new Exception(message: 'Product not found');
     }
+
+    public function updateProduct($productId, $request)
+    {
+        $product = Product::find($productId);
+
+        if ($product === null) {
+            return false;
+        }
+
+        if ($request->hasFile('productImage')) {
+
+            if ($product->productImage !== null) {
+                $this->removeImage($product->productImage);
+            }
+
+            $path = $this->storeImage($request->file('productImage'), $product->pkProductId, FileFolderEnum::Products->value);
+            $request->merge(['productImage' => $path]);
+        }
+
+        return $product->update($request->all());
+    }
+
 }
