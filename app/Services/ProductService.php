@@ -37,8 +37,15 @@ class ProductService
     {
         try {
 
-            $foods = Product::create([
+            $duplicateProduct = Product::where('name', $request->name)
+                ->where('size', $request->size)
+                ->first();
 
+            if ($duplicateProduct) {
+
+                return 'duplicate';
+            }
+            $foods = Product::create([
                 'name' => $request->name,
                 'price' => $request->price,
                 'size' => $request->size,
@@ -48,19 +55,28 @@ class ProductService
 
             if ($foods) {
 
-                if ($request->hasFile('productImage')) {
+                $existingProduct = Product::where('name', $request->name)
+                    ->where('type', $request->type)
+                    ->first();
+
+
+                if (!$existingProduct && $request->hasFile('productImage')) {
                     $path = $this->storeImage($request->file('productImage'), $foods->pkProductId, FileFolderEnum::Products->value);
                     $foods->productImage = $path;
                 }
+
+
                 $foods->save();
             }
 
             return $foods;
 
         } catch (Exception $e) {
-            throw $e;
+            throw $e;  // Let the exception be caught by the controller
         }
     }
+
+
 
     public function getProducts()
     {

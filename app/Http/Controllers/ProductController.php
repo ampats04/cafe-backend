@@ -24,7 +24,14 @@ class ProductController extends Controller
 
             $product = $this->productService->addProduct($request);
 
-            // Return success response
+
+            if ($product === 'duplicate') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'A product with the same name and size already exists.',
+                ], 409);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Product added successfully!',
@@ -32,14 +39,15 @@ class ProductController extends Controller
             ], 201);
 
         } catch (Exception $e) {
-
+            // Return a failure response if something goes wrong
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to add product.',
-                'error' => "Something went wrong"
+                'error' => 'Something went wrong'
             ], 500);
         }
     }
+
 
     public function getProducts()
     {
