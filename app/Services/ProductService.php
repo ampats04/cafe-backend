@@ -39,6 +39,7 @@ class ProductService
 
             $duplicateProduct = Product::where('name', $request->name)
                 ->where('size', $request->size)
+                ->where('type', $request->type)
                 ->first();
 
             if ($duplicateProduct) {
