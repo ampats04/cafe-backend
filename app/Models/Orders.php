@@ -48,7 +48,7 @@ class Orders extends Model
     public function scopeServed($query)
     {
 
-        return $query->whre('status', '=', 'Served');
+        return $query->where('status', '=', 'Served');
     }
 
     public function scopeCompleted($query)
