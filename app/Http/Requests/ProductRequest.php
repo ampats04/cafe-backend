@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
             'price' => 'sometimes|numeric|min:0',
             'size' => 'sometimes|in:Small,Medium,Large,No Size',
             'productImage' => 'file|mimes:jfif,jpeg,jpg,png|max:10240',
-            'type' => 'sometimes|in:Food,Beverage,Milktea',
+            'type' => 'sometimes|in:Food,Shake,Milktea',
             'availability' => 'sometimes|in:Available,Not Available',
         ];
     }
@@ -38,7 +38,7 @@ class ProductRequest extends FormRequest
             'price.required' => 'The product price is required.',
             'price.numeric' => 'The price must be a valid number.',
             'size.in' => 'The size must be one of: Small, Medium, Large, No Size.',
-            'type.in' => 'The type must be one of: Food,Beverage,Milktea.',
+            'type.in' => 'The type must be one of: Food,Shake,Milktea.',
             'availability.in' => 'The availability must be either Available or Not Available.',
         ];
     }

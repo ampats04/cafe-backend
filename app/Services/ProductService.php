@@ -34,48 +34,49 @@ class ProductService
         return $flag;
     }
     public function addProduct($request)
-    {
-        try {
+{
+    try {
+        // Check for duplicate product based on name, size, and type
+        $duplicateProduct = Product::where('name', $request->name)
+            ->where('size', $request->size)
+            ->where('type', $request->type)
+            ->first();
 
-            $duplicateProduct = Product::where('name', $request->name)
-                ->where('size', $request->size)
+        if ($duplicateProduct) {
+            return 'duplicate';
+        }
+
+        // Create the new product entry
+        $foods = Product::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'size' => $request->size,
+            'type' => $request->type,
+            'availability' => isset($request->availability) ? $request->availability : 'Not Available'
+        ]);
+
+        if ($foods) {
+            $existingProductWithImage = Product::where('name', $request->name)
                 ->where('type', $request->type)
+                ->whereNotNull('productImage')
                 ->first();
 
-            if ($duplicateProduct) {
-
-                return 'duplicate';
-            }
-            $foods = Product::create([
-                'name' => $request->name,
-                'price' => $request->price,
-                'size' => $request->size,
-                'type' => $request->type,
-                'availability' => isset($request->availability) ? $request->availability : 'Not Available'
-            ]);
-
-            if ($foods) {
-
-                $existingProduct = Product::where('name', $request->name)
-                    ->where('type', $request->type)
-                    ->first();
-
-
-                if (!$existingProduct && $request->hasFile('productImage')) {
-                    $path = $this->storeImage($request->file('productImage'), $foods->pkProductId, FileFolderEnum::Products->value);
-                    $foods->productImage = $path;
-                }
-
-
-                $foods->save();
+            if (!$existingProductWithImage && $request->hasFile('productImage')) {
+                $path = $this->storeImage($request->file('productImage'), $foods->pkProductId, FileFolderEnum::Products->value);
+                $foods->productImage = $path;
             }
 
-            return $foods;
-
-        } catch (Exception $e) {
-            throw $e;  // Let the exception be caught by the controller
+            // Save the new product with or without an image
+            $foods->save();
         }
+
+        return $foods;
+
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Something went wrong: ' . $e->getMessage()], 500);
     }
+}
+
 
 
 

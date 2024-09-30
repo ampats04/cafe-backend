@@ -112,28 +112,24 @@ class AuthController extends Controller
 
     public function endSession($tableId)
     {
-        // $tableId = session('tableId');
         try {
-
-            // $tableId = $request->tableNumber;
-
             $table = Table::where('pkTableId', '=', $tableId)
                 ->where('status', 'Active')
                 ->first();
-
+    
             $cartItems = Orders::where('fkTableId', $tableId)
                 ->served()
                 ->get();
-
+    
             if ($cartItems->isNotEmpty()) {
                 foreach ($cartItems as $cartItem) {
                     $cartItem->update(['status' => 'Completed']);
                 }
             }
-
+    
+            // Update table status
             $table->update(['status' => 'Inactive', 'customerName' => null]);
-            // session()->flush();
-
+    
             return response()->json([
                 'success' => true,
                 'message' => 'Thank you for dining in!',
@@ -145,5 +141,6 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
 
 }

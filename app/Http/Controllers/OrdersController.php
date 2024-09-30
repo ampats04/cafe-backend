@@ -80,8 +80,6 @@ class OrdersController extends Controller
 
     public function removeFromCart($tableId, $productId)
     {
-        // $tableId = session('tableId');
-        // $tableId = $request->fkTableId;
         $cartItem = Orders::where('fkTableId', '=', $tableId)
             ->where('fkProductId', '=', $productId)
             ->active()
@@ -157,59 +155,59 @@ class OrdersController extends Controller
         ], 200);
     }
 
-    public function served($tableId)
-    {
+   public function served($tableId)
+{
+    $order = Orders::where('fkTableId', '=', $tableId)
+        ->pending()
+        ->first();
 
-        $order = Orders::where('fkTableId', '=', $tableId)
-            ->pending()
-            ->first();
-
-        if ($order) {
-            $order->status = 'served';
-            $order->save();
-            return response()->json(['success' => true, 'message' => 'Order status updated to served', 'data' => $order], 200);
-        }
-
-        return response()->json(['message' => 'No pending order found'], 404);
+    if ($order) {
+        $order->status = 'served';
+        $order->save();
+        return response()->json(['success' => true, 'message' => 'Order status updated to served', 'data' => $order], 200);
     }
 
-    public function adminViewServedOrders()
-    {
+    return response()->json(['message' => 'No pending order found'], 404);
+}
 
-        $orders = Orders::served()
-            ->with(['product', 'table'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+public function adminViewServedOrders()
+{
+    $orders = Orders::where('status', 'served') 
+        ->with(['product', 'table'])
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        if ($orders->isNotEmpty()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Retrieved Order History',
-                'data' => $orders,
-            ], 200);
-        }
+    if ($orders->isNotEmpty()) {
         return response()->json([
-            'success' => false,
-            'message' => 'No orders found',
+            'success' => true,
+            'message' => 'Retrieved Order History',
+            'data' => $orders,
         ], 200);
     }
-    public function checkout($tableId)
-    {
 
-        $cartItems = Orders::where('fkTableId', $tableId)
-            ->active()
-            ->get();
+    return response()->json([
+        'success' => false,
+        'message' => 'No orders found',
+    ], 200);
+}
+public function checkout($tableId)
+{
 
-        if ($cartItems->isEmpty()) {
-            return response()->json(['success' => true, 'message' => 'Cart is empty', 'data' => []], 400);
-        }
+    $cartItems = Orders::where('fkTableId', $tableId)
+        ->active()
+        ->get();
 
-        foreach ($cartItems as $cartItem) {
-            $cartItem->update(['status' => 'Pending']);
-        }
-
-        return response()->json(['success' => true, 'message' => 'Order successful', 'data' => $cartItems], 200);
+    if ($cartItems->isEmpty()) {
+        return response()->json(['success' => true, 'message' => 'Cart is empty', 'data' => []], 400);
     }
+
+    foreach ($cartItems as $cartItem) {
+        $cartItem->update(['status' => 'Pending']);
+    }
+
+    return response()->json(['success' => true, 'message' => 'Order successful', 'data' => $cartItems], 200);
+}
+
 
     public function viewOrdered($tableId)
     {
