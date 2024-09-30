@@ -122,7 +122,7 @@ class AuthController extends Controller
                 ->first();
 
             $cartItems = Orders::where('fkTableId', $tableId)
-                ->pending()
+                ->served()
                 ->get();
 
             if ($cartItems->isNotEmpty()) {
