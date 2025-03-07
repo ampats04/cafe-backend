@@ -145,7 +145,12 @@ public function getProducts($perPage)
             }
 
             $path = $this->storeImage($request->file('productImage'), $product->pkProductId, FileFolderEnum::Products->value);
-            $request->merge(['productImage' => $path]);
+              if (!$path) {
+                return false;
+             }
+
+             $product->productImage = $path;
+
         }
 
         return $product->update($request->all());
