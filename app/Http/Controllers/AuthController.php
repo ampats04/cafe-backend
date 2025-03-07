@@ -67,6 +67,17 @@ class AuthController extends Controller
 
 
         try {
+
+            $table_active = Table::where('tableNumber', $request->tableNumber)
+            ->active()
+            ->first();
+
+        if ($table_active) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Table is already taken'
+            ]);
+        }
             $table_inactive = Table::where('tableNumber', $request->tableNumber)
                 ->inactive()
                 ->first();
@@ -78,16 +89,7 @@ class AuthController extends Controller
                 ], 404);
             }
 
-            $table_active = Table::where('tableNumber', $request->tableNumber)
-                ->active()
-                ->first();
-
-            if ($table_active) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Table is already taken'
-                ]);
-            }
+           
 
             $table_inactive->update(['status' => 'Active']);
             // $pkTableId = $table_inactive->pkTableId;

@@ -80,11 +80,10 @@ class ProductService
 
 
 
-    public function getProducts()
-    {
-
-        return Product::all();
-    }
+public function getProducts($perPage)
+{
+    return Product::paginate($perPage);
+}
 
     public function getProductById($productId)
     {

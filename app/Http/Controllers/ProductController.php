@@ -49,35 +49,38 @@ class ProductController extends Controller
     }
 
 
-    public function getProducts()
-    {
+    public function getProducts(Request $request)
+{
+    try {
+        $perPage = $request->query('per_page', 3); // Default to 5 items per page
+        $shakes = $this->productService->getProducts($perPage);
 
-        try {
-
-            $shakes = $this->productService->getProducts();
-
-            if ($shakes->isEmpty()) {
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'No products found.',
-                    'data' => $shakes
-                ], 200);
-            }
+        if ($shakes->isEmpty()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Products fetched successfully!',
+                'message' => 'No products found.',
                 'data' => $shakes
             ], 200);
-        } catch (Exception $e) {
-            // Return server error response if something goes wrong
-            return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong',
-            ], 500); // 500 
-
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Products fetched successfully!',
+            'data' => $shakes->items(),
+            'pagination' => [
+                'current_page' => $shakes->currentPage(),
+                'per_page' => $shakes->perPage(),
+                'total' => $shakes->total(),
+                'last_page' => $shakes->lastPage(),
+            ]
+        ], 200);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Something went wrong',
+        ], 500);
     }
+}
 
     public function getFoods()
     {
